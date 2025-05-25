@@ -39,7 +39,7 @@ The frontend (hosted via **GitHub Pages**) sends questions to the backend (hoste
 
 ## 🖼️ Preview
 
-![Screenshot](https://github.com/Ak-N-G/physics-solver-ai/assets/your-screenshot-placeholder.png)  
+![Screenshot](https://github.com/Ak-N-G/physics-solver-ai/blob/main/assets/your-screenshot-placeholder.png)  
 *Clean, dark-themed layout with glowing highlights.*
 
 ---
