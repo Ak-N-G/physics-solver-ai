@@ -8,7 +8,7 @@ const app = express();
 const PORT = 3001;
 
 // Replace this with your actual Gemini API key
-const API_KEY = "Pastekey";
+const API_KEY = "AIzaSyDw4gki0SKBtItufQDf57UUTSv8v2yq0Ws";
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // Middleware
