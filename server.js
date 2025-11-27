@@ -5,10 +5,11 @@ const path = require("path");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-// Replace this with your actual Gemini API key
-const API_KEY = "your key";
+// Use environment variable for the Gemini API key in production.
+// Keep a fallback placeholder but recommend setting `GEMINI_API_KEY`.
+const API_KEY = process.env.GEMINI_API_KEY || "your key";
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // Middleware

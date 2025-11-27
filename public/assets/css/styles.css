@@ -1,0 +1,35 @@
+/* Modernized styles for Physics Solver AI */
+:root{
+  --accent:#ffd740;
+  --muted:#9aa4b2;
+  --bg1:#071026;
+}
+html,body{height:100%;}
+body{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:linear-gradient(135deg,#071026,#06233a);
+  color:#eef2f7;
+  margin:0;padding:20px;display:flex;justify-content:center;
+}
+#app{width:100%;max-width:880px;background:rgba(0,0,0,0.6);border-radius:12px;padding:18px;display:grid;grid-template-columns:1fr 360px;gap:16px}
+@media(max-width:900px){#app{grid-template-columns:1fr}}
+header{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:20px}
+.meta{color:var(--muted);font-size:13px}
+.left{display:flex;flex-direction:column;gap:12px}
+textarea{width:100%;min-height:160px;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#071126;color:#e6eef6}
+.controls{display:flex;gap:8px}
+.primary{flex:1;background:linear-gradient(180deg,var(--accent),#ffb300);border:none;padding:12px;border-radius:8px;font-weight:700;cursor:pointer;color:#08212a}
+.secondary{background:transparent;border:1px solid rgba(255,255,255,0.05);padding:10px;border-radius:8px;color:var(--muted);cursor:pointer}
+.right{background:rgba(255,255,255,0.03);padding:12px;border-radius:8px;color:var(--muted)}
+#output{color:#e6eef6;white-space:pre-wrap;min-height:140px}
+.chip{background:rgba(255,255,255,0.03);padding:8px;border-radius:8px;cursor:pointer}
+.small{font-size:13px;color:var(--muted)}
+.spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,0.08);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.actions{display:flex;gap:8px;margin-top:8px}
+.copyBtn{padding:8px 10px;background:rgba(255,255,255,0.04);border-radius:8px;border:none;color:var(--muted);cursor:pointer}
+.status{font-size:13px;color:var(--muted);margin-top:6px}
+.footer-note{grid-column:1/-1;text-align:center;color:var(--muted);font-size:13px;margin-top:6px}
+hr.sep{border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0}
+`

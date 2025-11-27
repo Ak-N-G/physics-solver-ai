@@ -4,181 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Physics Question Solver AI</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #3548a6, #1abbff);
-      color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 30px;
-      box-sizing: border-box;
-      overflow-x: hidden;
-    }
-
-    #app {
-      background: rgba(0,0,0,0.65);
-      border-radius: 20px;
-      padding: 30px 35px;
-      max-width: 700px;
-      width: 90vw;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-      display: flex;
-      flex-direction: column;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 28px;
-      font-weight: 900;
-      color: red;
-      text-shadow: 0 0 15px #ffae00;
-      user-select: none;
-    }
-
-    textarea {
-      width: 100%;
-      height: 130px;
-      padding: 14px 18px;
-      border-radius: 14px;
-      border: none;
-      font-size: 17px;
-      resize: vertical;
-      box-sizing: border-box;
-      background-color: #222;
-      color: #eee;
-      box-shadow: inset 0 0 8px #22a7f0;
-      transition: box-shadow 0.3s ease;
-    }
-
-    textarea:focus {
-      outline: none;
-      box-shadow: inset 0 0 12px #ffd740;
-    }
-
-    button {
-      margin-top: 22px;
-      width: 100%;
-      background-color: #ffc107;
-      border: none;
-      padding: 16px;
-      border-radius: 14px;
-      font-size: 20px;
-      font-weight: 700;
-      color: #000;
-      cursor: pointer;
-      box-shadow: 0 6px 14px #e0a800aa;
-      transition: background-color 0.35s ease, color 0.35s ease;
-    }
-
-    button:hover {
-      background-color: #ffb300;
-      color: #fff;
-    }
-
-    #output {
-      margin-top: 30px;
-      background: rgba(255,255,255,0.1);
-      padding: 26px 22px;
-      border-radius: 16px;
-      min-height: 100px;
-      max-height: 300px;
-      overflow-y: auto;
-      font-size: 18px;
-      line-height: 1.5em;
-      white-space: pre-wrap;
-      box-shadow: inset 0 0 10px #ffd740aa;
-      font-family: 'Times New Roman', serif;
-    }
-
-    #searchLink {
-      margin-top: 18px;
-      font-size: 17px;
-      text-align: center;
-    }
-
-    #searchLink a {
-      color: #ffd740;
-      font-weight: 600;
-      text-decoration: none;
-      transition: text-decoration 0.3s ease;
-    }
-
-    #searchLink a:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      margin-top: 45px;
-      text-align: center;
-      font-size: 14px;
-      color: #bbb;
-      user-select: none;
-    }
-  </style>
+  <meta name="description" content="Ask physics questions and get step-by-step explanations powered by Gemini AI." />
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- KaTeX for math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
 </head>
 <body>
 <div id="app">
-  <h1>Physics Question Solver AI</h1>
-  <textarea id="questionInput" placeholder="Type your physics question here..."></textarea>
-  <button id="solveBtn">Solve</button>
-  <div id="output"></div>
-  <div id="searchLink"></div>
-  <footer>Powered by Physics Formulas + Gemini AI by AkNG</footer>
+  <header>
+    <div>
+      <h1>Physics Question Solver AI</h1>
+      <div class="meta">Step-by-step physics explanations with Gemini AI</div>
+    </div>
+    <div class="meta">Keyboard: <strong>Ctrl/Cmd + Enter</strong></div>
+  </header>
+
+  <div class="left">
+    <textarea id="questionInput" placeholder="Type your physics question here..." aria-label="Physics question"></textarea>
+    <div class="controls">
+      <button id="solveBtn" class="primary">Solve</button>
+      <button id="clearBtn" class="secondary">Clear</button>
+    </div>
+    <div id="searchLink" class="small"></div>
+    <div id="status" class="small"></div>
+  </div>
+
+  <aside class="right">
+    <div class="small">Answer</div>
+    <div id="output">Answers will appear here.</div>
+    <div class="actions"><button id="copyAnswerBtn" class="copyBtn">Copy answer</button></div>
+    <hr class="sep">
+    <div class="small">Sample questions</div>
+    <div class="sample">
+      <div class="chip">A block slides down a 30° incline — find acceleration</div>
+      <div class="chip">Find electric field due to a ring at a point on axis</div>
+      <div class="chip">Derive escape velocity for a planet</div>
+    </div>
+  </aside>
+
+  <footer class="footer-note">Powered by Gemini AI — frontend updated</footer>
 </div>
 
-<script>
-  function generateGoogleSearchLink(query) {
-    if (!query) return "";
-    return `https://www.google.com/search?q=${encodeURIComponent(query)}+physics+problem`;
-  }
-
-  async function callGemini(question) {
-    try {
-      const response = await fetch("https://physics-solver-ai.onrender.com/ask-gemini", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question })
-      });
-      const data = await response.json();
-      return data.answer || "Gemini AI did not return an answer.";
-    } catch (err) {
-      return "Error reaching Gemini AI.";
-    }
-  }
-
-  document.getElementById("solveBtn").addEventListener("click", async () => {
-    const question = document.getElementById("questionInput").value.trim();
-    const outputDiv = document.getElementById("output");
-    const searchDiv = document.getElementById("searchLink");
-
-    if (!question) {
-      outputDiv.textContent = "Please enter a physics question.";
-      searchDiv.innerHTML = "";
-      return;
-    }
-
-    outputDiv.textContent = "Solving...";
-    searchDiv.innerHTML = "";
-
-    const answer = await callGemini(question);
-
-    outputDiv.textContent = answer;
-
-    const googleLink = generateGoogleSearchLink(question);
-    searchDiv.innerHTML = `<a href="${googleLink}" target="_blank">🔍 Search Google for more info</a>`;
-  });
-
-  document.getElementById("questionInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      document.getElementById("solveBtn").click();
-    }
-  });
-</script>
+  <script src="assets/js/app.js" defer></script>
 </body>
 </html>
